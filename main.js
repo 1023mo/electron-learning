@@ -1,7 +1,7 @@
-const { app, browserWindow }  = require('electron')
+const { app, BrowserWindow }  = require('electron')
 
 app.on('ready', () => {
-  const mainWindow = new browserWindow({
+  const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
