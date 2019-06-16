@@ -1,13 +1,7 @@
 const { app, BrowserWindow, ipcMain,dialog }  = require('electron')
-const Store = require('electron-store')
-const store = new Store()
+const DataStore = require('./renderer/musicDataStore')
 
-store.set('unicorn', '🦄')
-
-store.set('foo.bar', true)
-
-store.delete('unicorn')
-
+const myStore = new DataStore({name: 'Music Data'})
 class appWindow extends BrowserWindow{
   constructor(config, fileLocation) {
     const baseConfig = {
@@ -45,5 +39,10 @@ app.on('ready', () => {
         event.sender.send('selectedFiles',files)
       }
     })
+  })
+
+  ipcMain.on('addMusic', (event, tracks) => {
+    const updateTracks = myStore.addTracks(tracks).getTracks()
+    console.log(updateTracks);
   })
 })
