@@ -1,23 +1,31 @@
 const { app, BrowserWindow, ipcMain }  = require('electron')
 
-app.on('ready', () => {
-  const mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      nodeIntegration: true
-    }
-  })
-  mainWindow.loadFile('./renderer/index.html')
-  ipcMain.on('addMusicWindow', () => {
-    const addWindow = new BrowserWindow({
-      width: 500,
-      height: 400,
+class appWindow extends BrowserWindow{
+  constructor(config, fileLocation) {
+    const baseConfig = {
+      width: 800,
+      height: 600,
+      show: false,
       webPreferences: {
         nodeIntegration: true
-      },
-      parent: mainWindow
+      }
+    }
+    const finalConfig = {...baseConfig,...config}
+    super(finalConfig)
+    this.loadFile(fileLocation)
+    this.once('ready-to-show', () => {
+      this.show()
     })
-    addWindow.loadFile('./renderer/add.html')
+  }
+}
+
+app.on('ready', () => {
+  const mainWindow = new appWindow({},'./renderer/index.html')
+  ipcMain.on('addMusicWindow', () => {
+    const addWindow = new appWindow({
+      width: 500,
+      height: 400,
+      parent: mainWindow
+    },'./renderer/add.html')
   })
 })
