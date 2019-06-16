@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain }  = require('electron')
+const { app, BrowserWindow }  = require('electron')
 
 app.on('ready', () => {
   const mainWindow = new BrowserWindow({
@@ -8,10 +8,5 @@ app.on('ready', () => {
       nodeIntegration: true
     }
   })
-  mainWindow.loadFile('index.html')
-  ipcMain.on('renderMsg', (e, arg) => {
-    // e.sender.send('msg', 'It is a message from main.js')
-    // 等同于
-    mainWindow.send('msg', 'It is a message from main.js')
-  })
+  mainWindow.loadFile('./renderer/index.html')
 })
