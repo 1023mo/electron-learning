@@ -1,4 +1,4 @@
-const { app, BrowserWindow }  = require('electron')
+const { app, BrowserWindow, ipcMain }  = require('electron')
 
 app.on('ready', () => {
   const mainWindow = new BrowserWindow({
@@ -9,4 +9,15 @@ app.on('ready', () => {
     }
   })
   mainWindow.loadFile('./renderer/index.html')
+  ipcMain.on('addMusicWindow', () => {
+    const addWindow = new BrowserWindow({
+      width: 500,
+      height: 400,
+      webPreferences: {
+        nodeIntegration: true
+      },
+      parent: mainWindow
+    })
+    addWindow.loadFile('./renderer/add.html')
+  })
 })
