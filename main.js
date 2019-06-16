@@ -1,4 +1,12 @@
 const { app, BrowserWindow, ipcMain,dialog }  = require('electron')
+const Store = require('electron-store')
+const store = new Store()
+
+store.set('unicorn', '🦄')
+
+store.set('foo.bar', true)
+
+store.delete('unicorn')
 
 class appWindow extends BrowserWindow{
   constructor(config, fileLocation) {
