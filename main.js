@@ -23,6 +23,9 @@ class appWindow extends BrowserWindow{
 
 app.on('ready', () => {
   const mainWindow = new appWindow({},'./renderer/index.html')
+  mainWindow.webContents.on('didi-finish-load', () => {
+    mainWindow.send('getTracks', myStore.getTracks())
+  })
   ipcMain.on('addMusicWindow', () => {
     const addWindow = new appWindow({
       width: 500,
@@ -43,6 +46,6 @@ app.on('ready', () => {
 
   ipcMain.on('addMusic', (event, tracks) => {
     const updateTracks = myStore.addTracks(tracks).getTracks()
-    console.log(updateTracks);
+    mainWindow.send('getTracks', updateTracks)
   })
 })
