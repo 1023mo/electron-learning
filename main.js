@@ -2,7 +2,7 @@ const { app, BrowserWindow, ipcMain,dialog }  = require('electron')
 const DataStore = require('./renderer/musicDataStore')
 
 const myStore = new DataStore({name: 'Music Data'})
-class appWindow extends BrowserWindow{
+class AppWindow extends BrowserWindow{
   constructor(config, fileLocation) {
     const baseConfig = {
       width: 800,
@@ -22,12 +22,12 @@ class appWindow extends BrowserWindow{
 }
 
 app.on('ready', () => {
-  const mainWindow = new appWindow({},'./renderer/index.html')
-  mainWindow.webContents.on('didi-finish-load', () => {
+  const mainWindow = new AppWindow({},'./renderer/index.html')
+  mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.send('getTracks', myStore.getTracks())
   })
   ipcMain.on('addMusicWindow', () => {
-    const addWindow = new appWindow({
+    const addWindow = new AppWindow({
       width: 500,
       height: 400,
       parent: mainWindow

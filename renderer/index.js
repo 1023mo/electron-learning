@@ -1,5 +1,8 @@
 const { ipcRenderer } = require('electron')
 const { $ } = require('./helper')
+let musicAudio = new Audio()
+let allTracks
+let currentTrack
 
 $('addMusicBtn').addEventListener('click', () => {
   ipcRenderer.send('addMusicWindow')
@@ -14,8 +17,8 @@ const renderListHTML = (tracks) => {
         <b>${track.fileName}</b>
       </div>
       <div class="col-2">
-        <i class="fas fa-play mr-2"></i>
-        <i class="fas fa-trash-alt"></i>
+        <i class="fas fa-play mr-3" data-id="${track.id}"></i>
+        <i class="fas fa-trash-alt" data-id="${track.id}"></i>
       </div>
     </li>`
     return html
@@ -24,5 +27,18 @@ const renderListHTML = (tracks) => {
   tracksList.innerHTML = tracks.length ? `<ul class="list-group">${tracksListHTML}</ul>` : emptyTrackHTML
 }
 ipcRenderer.on('getTracks', (event,tracks) => {
+  allTracks = tracks
   renderListHTML(tracks)
+})
+
+$('tracksList').addEventListener('click', event => {
+  event.preventDefault()
+  const { dataset, classList } = event.target
+  const id = dataset && dataset.id
+  if (id && classList.contains('fa-play')) {
+    currentTrack = allTracks.find(track => track.id === id)
+    musicAudio.src = currentTrack.path
+    musicAudio.play()
+    classList.replace('fa-play', 'fa-pause')
+  }
 })
