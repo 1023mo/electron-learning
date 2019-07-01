@@ -36,9 +36,22 @@ $('tracksList').addEventListener('click', event => {
   const { dataset, classList } = event.target
   const id = dataset && dataset.id
   if (id && classList.contains('fa-play')) {
-    currentTrack = allTracks.find(track => track.id === id)
-    musicAudio.src = currentTrack.path
-    musicAudio.play()
+    if (currentTrack && currentTrack.id === id) {
+      musicAudio.play()
+    } else {
+      currentTrack = allTracks.find(track => track.id === id)
+      musicAudio.src = currentTrack.path
+      musicAudio.play()
+      const resetIconEle = document.querySelector('.fa-pause')
+      if (resetIconEle) {
+        resetIconEle.classList.replace('fa-pause', 'fa-play')
+      }
+    }
     classList.replace('fa-play', 'fa-pause')
+  } else if (id && classList.contains('fa-pause')) {
+    musicAudio.pause()
+    classList.replace('fa-pause', 'fa-play')
+  } else if (id && classList.contains('fa-trash-alt')) {
+    ipcRenderer.send('delete-file', id)
   }
 })

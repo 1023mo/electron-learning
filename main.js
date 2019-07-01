@@ -33,6 +33,10 @@ app.on('ready', () => {
       parent: mainWindow
     },'./renderer/add.html')
   })
+  ipcMain.on('delete-file', (event, id) => {
+    const updateTracks = myStore.deleteTrack(id).getTracks()
+    mainWindow.send('getTracks', myStore.getTracks())
+  })
   ipcMain.on('openMusicFile', (event) => {
     dialog.showOpenDialog({
       properties: ['openFile', 'multiSelections'],
