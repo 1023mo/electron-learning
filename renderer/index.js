@@ -41,8 +41,12 @@ ipcRenderer.on('getTracks', (event,tracks) => {
   allTracks = tracks
   renderListHTML(tracks)
 })
-const updateProgressHTML = (currentTime) => {
+const updateProgressHTML = (currentTime, duration) => {
+  const progress = Math.floor(currentTime / duration * 100)
+  const bar = $('player-progress')
   const seeker = $('current-seeker')
+  bar.innerHTML = progress + '%'
+  bar.style.width = progress + '%'
   seeker.innerHTML = convertDuration(currentTime)
 }
 
@@ -50,7 +54,7 @@ musicAudio.addEventListener('loadedmetadata', () => {
   renderPlayerHTML(currentTrack.fileName, musicAudio.duration)
 })
 musicAudio.addEventListener('timeupdate', () => {
-  updateProgressHTML(musicAudio.currentTime)
+  updateProgressHTML(musicAudio.currentTime, musicAudio.duration)
 })
 
 $('tracksList').addEventListener('click', event => {
