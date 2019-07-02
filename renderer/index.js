@@ -26,9 +26,31 @@ const renderListHTML = (tracks) => {
   const emptyTrackHTML = '<div class="alert alert-primary"></div>'
   tracksList.innerHTML = tracks.length ? `<ul class="list-group">${tracksListHTML}</ul>` : emptyTrackHTML
 }
+
+const renderPlayerHTML = (name, duration) => {
+  const player = $('player-status')
+  const html = `<div class="col font-weight-bold">
+                  正在播放：${name}
+                </div>
+                <div class="col">
+                  <span id="current-seeker">00:00</span>/${duration}
+                </div>`
+  player.innerHTML = html
+}
 ipcRenderer.on('getTracks', (event,tracks) => {
   allTracks = tracks
   renderListHTML(tracks)
+})
+const updateProgressHTML = (currentTime) => {
+  const seeker = $('current-seeker')
+  seeker.innerHTML = currentTime
+}
+
+musicAudio.addEventListener('loadedmetadata', () => {
+  renderPlayerHTML(currentTrack.fileName, musicAudio.duration)
+})
+musicAudio.addEventListener('timeupdate', () => {
+  updateProgressHTML(musicAudio.currentTime)
 })
 
 $('tracksList').addEventListener('click', event => {
