@@ -1,10 +1,47 @@
+// "start": "nodemon --watch main.js --exec 'electron .'",
 {
   "name": "electron-learning",
   "version": "1.0.0",
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
-    "start": "nodemon --watch main.js --exec 'electron .'"
+    "start": "electron .",
+    "dist": "build"
+  },
+  "build": {
+    "appId": "simpleMusicPlayer",
+    "mac": {
+      "category": "public.app-category.productivity"
+    },
+    "dmg": {
+      "background": "build/installBg.png",
+      "icon": "build/icon.icns",
+      "iconSize": 100,
+      "contents": [{
+        "x": 380,
+        "y": 280,
+        "type": "link",
+        "path": "/Applications"
+      }, {
+        "x": 110,
+        "y": 280,
+        "type": "file"
+      }],
+      "window": {
+        "width": 500,
+        "height": 500
+      }
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": "squirrel",
+      "icon": "build/icon.ico"
+    }
   },
   "repository": "https://github.com/1023mo/electron-learning.git",
   "keywords": [
