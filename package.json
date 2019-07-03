@@ -1,4 +1,3 @@
-// "start": "nodemon --watch main.js --exec 'electron .'",
 {
   "name": "electron-learning",
   "version": "1.0.0",
