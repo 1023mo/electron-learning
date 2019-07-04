@@ -4,7 +4,7 @@
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "nodemon --watch main.js --exec 'electron .'",
     "dist": "build"
   },
   "build": {
@@ -16,16 +16,19 @@
       "background": "build/installBg.png",
       "icon": "build/icon.icns",
       "iconSize": 100,
-      "contents": [{
-        "x": 380,
-        "y": 280,
-        "type": "link",
-        "path": "/Applications"
-      }, {
-        "x": 110,
-        "y": 280,
-        "type": "file"
-      }],
+      "contents": [
+        {
+          "x": 380,
+          "y": 280,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 110,
+          "y": 280,
+          "type": "file"
+        }
+      ],
       "window": {
         "width": 500,
         "height": 500
@@ -54,10 +57,14 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^5.0.2",
-    "electron-builder": "^20.44.4"
+    "electron-builder": "^20.44.4",
+    "nodemon": "^1.18.10"
   },
   "dependencies": {
     "bootstrap": "^4.3.1",
+    "electron-store": "^3.2.0",
+    "jquery": "^3.4.1",
+    "popper.js": "^1.15.0",
     "uuid": "^3.3.2"
   }
 }
